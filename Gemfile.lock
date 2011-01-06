@@ -1,0 +1,28 @@
+PATH
+  remote: .
+  specs:
+    web_ui_components (0.0.developer)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    ZenTest (4.4.2)
+    diff-lcs (1.1.2)
+    rspec (2.4.0)
+      rspec-core (~> 2.4.0)
+      rspec-expectations (~> 2.4.0)
+      rspec-mocks (~> 2.4.0)
+    rspec-core (2.4.0)
+    rspec-expectations (2.4.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.4.0)
+    yard (0.6.4)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  ZenTest (~> 4.4.2)
+  rspec (~> 2.4.0)
+  web_ui_components!
+  yard (~> 0.6.4)
