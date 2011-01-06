@@ -8,5 +8,6 @@ group :test do
 end
 
 group :development do
+  gem 'bluecloth', '~> 2.0.9'
   gem 'yard', '~> 0.6.4'
 end
