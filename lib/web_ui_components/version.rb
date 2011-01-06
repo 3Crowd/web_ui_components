@@ -15,14 +15,8 @@ module WebUIComponents
 
     # Converts the version number held in this module to a human readable string
     # @return [ String ] The string representation of the version
-    def self.to_s
+    def self.to_standard_format
       [MAJOR,MINOR,PATCH].join('.')
-    end
-
-    # Returns the name of the module
-    # @return [ String ] The name of the module
-    def self.inspect
-      name
     end
 
   end

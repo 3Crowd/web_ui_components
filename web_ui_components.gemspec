@@ -3,7 +3,7 @@ require 'web_ui_components/version'
 
 Gem::Specification.new do |s|
   s.name	= 'web_ui_components'
-  s.version	= WebUIComponents::Version.to_s
+  s.version	= WebUIComponents::Version.to_standard_format
   s.authors	= ["Justin Lynn (justinlynn)", "3Crowd Technologies, Inc. (Sponsor)"]
   s.email	= ["ops@3crowd.com"]
   s.homepage	= "http://github.com/3Crowd/ui_components"
