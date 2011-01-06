@@ -15,4 +15,7 @@ Gem::Specification.new do |s|
   s.files	= Dir.glob("{bin,lib}/**/*") + %w(LICENSE README.md CHANGELOG.md)
   s.executables = Dir.glob("{bin}/*")
   s.require_path= 'lib'
+
+  s.add_runtime_dependency "activesupport", "~> 3.0.3"
+
 end
