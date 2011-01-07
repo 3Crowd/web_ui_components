@@ -16,26 +16,30 @@ describe WebUIComponents::Core::Component::BuildingBlocks do
       WebUIComponents::Core::Component::BuildingBlocks.singleton_class.included_modules.should include(ActiveSupport::Concern)
     end
     
-    describe "method has_building_blocks?" do
+    describe "class methods" do
       
-      it "is defined" do
-        WebUIComponents::Core::Component::BuildingBlocks::ClassMethods.instance_methods.should include(:has_building_blocks?)
+      describe "method has_building_blocks?" do
+        
+        it "is defined" do
+          WebUIComponents::Core::Component::BuildingBlocks::ClassMethods.instance_methods.should include(:has_building_blocks?)
+        end
+        
+        it "indicates whether or not building blocks have been specified for the component" do
+          pending 'implementation'
+        end
+        
       end
       
-      it "indicates whether or not building blocks have been specified for the component" do
-        pending 'implementation'
-      end
-      
-    end
-    
-    describe "method building_blocks" do
-      
-      it "is defined" do
-        WebUIComponents::Core::Component::BuildingBlocks::ClassMethods.instance_methods.should include(:building_blocks)
-      end
-      
-      it "adds building blocks to the content for the component" do
-        pending 'implementation'
+      describe "method building_blocks" do
+        
+        it "is defined" do
+          WebUIComponents::Core::Component::BuildingBlocks::ClassMethods.instance_methods.should include(:building_blocks)
+        end
+        
+        it "adds building blocks to the content for the component" do
+          pending 'implementation'
+        end
+        
       end
       
     end
