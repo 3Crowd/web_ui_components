@@ -19,13 +19,22 @@ describe WebUIComponents::Core::Component::BuildingBlocks do
     describe "class methods" do
 
       describe "method has_building_blocks?" do
-
+        
+        before do
+          @component = dynamic_subclass(WebUIComponents::Core::Component, :class_suffix => 'Component')
+        end
+        
         it "is defined" do
-          WebUIComponents::Core::Component::BuildingBlocks::ClassMethods.instance_methods.should include(:has_building_blocks?)
+          @component.should respond_to(:has_building_blocks?)
         end
 
         it "indicates whether or not building blocks have been specified for the component" do
-          pending 'implementation'
+          @component.should_not have_building_blocks
+          @component.class_eval do
+            building_blocks do
+            end
+          end
+          @component.should have_building_blocks
         end
 
       end

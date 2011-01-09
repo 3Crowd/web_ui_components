@@ -14,12 +14,12 @@ module WebUIComponents
 
           # Specify the building blocks that make up the content of this component
           def building_blocks
-            raise NotImplementedError
+            @building_blocks_specified = true
           end
 
           # Has this component had building blocks defined?
           def has_building_blocks?
-            raise NotImplementedError
+            !!@building_blocks_specified
           end
 
           # Define a variant style for this node, only one variant may be active inside
