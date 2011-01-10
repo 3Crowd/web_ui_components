@@ -22,13 +22,6 @@ module WebUIComponents
             !!@building_blocks_specified
           end
 
-          # Define a variant style for this node, only one variant may be active inside
-          # an instant and variants must be registered using this method before they
-          # are activated
-          def variant style_name
-            raise NotImplementedError
-          end
-
         end
 
       end
