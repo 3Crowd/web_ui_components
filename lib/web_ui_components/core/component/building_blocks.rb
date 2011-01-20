@@ -29,6 +29,8 @@ module WebUIComponents
 
           private
 
+          # provides an accessor and allows to lazily initialize the building blocks stored in the component
+          # @private
           def building_blocks_store
             @building_bocks ||= Hash.new
           end
