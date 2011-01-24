@@ -26,6 +26,22 @@ module WebUIComponents
           def has_building_block_set? set_name = :default
             !building_blocks_store[set_name].nil?
           end
+          
+          # Registers a givne building block with the given name
+          def register_building_block building_block, name
+            registered_building_blocks[name] = building_block
+          end
+          
+          # Tests for the presence of a building block registered with the given name
+          def has_building_block_name_registered? name
+            registered_building_blocks.has_key?(name)
+          end
+          
+          # Tests for the presense of a building block class that has been registered under
+          # any name
+          def has_building_block_registered? building_block_class
+            registered_building_blocks.has_value?(building_block_class)
+          end
 
           private
 
@@ -33,6 +49,12 @@ module WebUIComponents
           # @private
           def building_blocks_store
             @building_bocks ||= Hash.new
+          end
+          
+          # provides an accessor and allows lazy initiation of the building blocks registered with the component
+          # @private
+          def registered_building_blocks
+            @registered_building_blocks ||= Hash.new
           end
 
         end

@@ -96,7 +96,7 @@ describe WebUIComponents::Core::Component::BuildingBlocks do
         end
 
         it "is defined" do
-          WebUIComponents::Core::Component::BuildingBlocks::ClassMethods.instance_methods.should include(:building_blocks)
+          @component.should respond_to(:building_blocks)
         end
 
         it "should not contain any building block sets if none are specified" do
@@ -114,6 +114,78 @@ describe WebUIComponents::Core::Component::BuildingBlocks do
         end
 
 
+      end
+      
+      describe "method register_building_block" do
+        
+        before do
+          @component = dynamic_subclass(WebUIComponents::Core::Component, :class_suffix => 'Component')
+        end
+        
+        it 'is defined' do
+          @component.should respond_to(:register_building_block)
+        end
+        
+        context 'with two arguments (first the building block, and then second, the name)' do
+          
+          it 'registers the building block' do
+            @component.register_building_block(Object, :test_block)
+            @component.should have_building_block_name_registered(:test_block)
+          end
+          
+        end
+        
+      end
+      
+      describe "method has_building_block_name_registered?" do
+        
+        before do
+          @component = dynamic_subclass(WebUIComponents::Core::Component, :class_suffix => 'Component')
+          @component.register_building_block(Object, :test_object)
+        end
+        
+        it 'is defined' do
+          @component.should respond_to(:has_building_block_name_registered?)
+        end
+
+        context 'with one argument' do
+          
+          it 'responds with true if the given building block name is registered' do
+            @component.should have_building_block_name_registered(:test_object)
+          end
+          
+          it 'responds with false if the given building block name is not registered' do
+            @component.should_not have_building_block_name_registered(:foo_master_block)
+          end
+          
+        end
+        
+      end
+      
+      describe "method has_building_block_registered?" do
+        
+        before do
+          @component = dynamic_subclass(WebUIComponents::Core::Component, :class_suffix => 'Component')
+          @test_object_class = Object
+          @component.register_building_block(@test_object_class, :test_block)
+        end
+        
+        it 'is defined' do
+          @component.should respond_to(:has_building_block_registered?)
+        end
+        
+        context 'with one argument' do
+          
+          it 'returns true if the given class is registered' do
+            @component.should have_building_block_registered(@test_object_class)
+          end
+          
+          it 'returns false if the given class is not registered' do
+            @component.should_not have_building_block_registered(Class.new)
+          end
+          
+        end
+        
       end
 
     end
