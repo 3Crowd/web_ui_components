@@ -16,43 +16,54 @@ describe WebUIComponents::Core::BuildingBlocks::BuildingBlock do
   
   describe 'class methods' do
     
-    describe 'method component_name' do
+    describe 'method building_block_name' do
       
       before do
         @building_block = dynamic_subclass(WebUIComponents::Core::BuildingBlocks::BuildingBlock)
+        @building_block_child = dynamic_subclass(@building_block, :class_suffix => 'Child')
+        @building_block_sibling = dynamic_subclass(WebUIComponents::Core::BuildingBlocks::BuildingBlock, :class_suffix => 'Sibling')
       end
       
       context 'with a single argument representing a single component_name' do
         
         it 'assigns the block a name for use inside component building block methods' do
           test_building_block_name = :test_building_block
-          @building_block.component_names.should be_empty
+          @building_block.building_block_names.should be_empty
           @building_block.class_eval do
-            component_name test_building_block_name
+            building_block_name test_building_block_name
           end
-          @building_block.component_names.should include(test_building_block_name)
+          @building_block.building_block_names.should include(test_building_block_name)
         end
         
-      end
-      
-      context 'with multiple arguments representing a collection of component_names' do
+        context 'does not pollute' do
         
-        it 'assigns the block multiple names for use inside component building block methods' do
-          test_building_block_names = [ :test_building_block, :test_building_block_1, :test_building_block_2 ]
-          @building_block.component_names.should be_empty
-          @building_block.class_eval do
-            component_name *test_building_block_names
+          before do
+            @building_block.building_block_names.should be_empty
+            @building_block.class_eval do
+              building_block_name :test_building_block
+            end
+            @building_block.building_block_names.should include(:test_building_block)
           end
-          test_building_block_names.each do |building_block_name|
-            @building_block.component_names.should include(building_block_name)
+          
+          it 'a sibling class with specified building_block_names' do
+            @building_block_sibling.building_block_names.should be_empty
           end
+          
+          it 'parent class with specified building_block_names' do
+            @building_block.superclass.building_block_names.should be_empty
+          end
+          
+          it 'child class with specified building_block_names' do
+            @building_block_child.building_block_names.should be_empty
+          end
+          
         end
         
       end
       
     end
     
-    describe 'method component_names' do
+    describe 'method building_block_names' do
       
       before do
         @building_block = dynamic_subclass(WebUIComponents::Core::BuildingBlocks::BuildingBlock)
@@ -60,14 +71,20 @@ describe WebUIComponents::Core::BuildingBlocks::BuildingBlock do
       
       context 'with no arguments' do
         
-        it 'returns a list of the registered names by which this building_block can be referred to from within a component' do
-          test_component_names = [:test_component, :test_component_1]
-          @building_block.component_names.should be_empty
-          @building_block.class_eval do
-            component_name *test_component_names
-          end
-          @building_block.component_names.should == test_component_names
+        it 'returns an empty array if no names have been registered' do
+          @building_block.building_block_names.should be_empty
         end
+        
+        it 'returns a list of the registered names by which this building_block can be referred to from within a component' do
+          test_building_block_names = [:test_component, :test_component_1]
+          @building_block.building_block_names.should be_empty
+          @building_block.class_eval do
+            test_building_block_names.each do |test_building_block_name|
+              building_block_name test_building_block_name
+            end
+          end
+          @building_block.building_block_names.should == test_building_block_names
+        end 
         
       end
       
