@@ -1,4 +1,19 @@
 require 'rspec/core/rake_task'
+require 'metric_fu'
+
+MetricFu::Configuration.run do |config|
+config.rcov = { :environment => 'test',
+                :test_files => ['spec/**/*_spec.rb'],
+                :rcov_opts => ["--sort coverage", 
+                               "--no-html", 
+                               "--text-coverage",
+                               "--no-color",
+                               "--profile",
+                               "-I lib:spec",
+                               "--exclude /gems/,/Library/,/usr/,spec"],
+                :external => nil
+                }
+end
 
 RSpec::Core::RakeTask.new :spec
 
