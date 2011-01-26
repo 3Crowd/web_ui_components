@@ -53,7 +53,7 @@ describe WebUIComponents::Core::BuildingBlocks::BuildingBlock do
             @building_block.superclass.building_block_names.should be_empty
           end
           
-          it 'child class with specified building_block_names' do
+          it 'a child class with specified building_block_names' do
             @building_block_child.building_block_names.should be_empty
           end
           
