@@ -5,6 +5,9 @@ module WebUIComponents
     module BuildingBlocks
       # Defines a grouping of building blocks. May be empty.
       class Group < BuildingBlock
+        
+        building_block_name :group
+        
       end
     end
   end
