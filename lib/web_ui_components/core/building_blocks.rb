@@ -1,7 +1,10 @@
 require 'web_ui_components/core/building_blocks/building_block'
-['group', 'header', 'paragraph', 'link', 'list', 'text'].each do |m|
-  require 'web_ui_components/core/building_blocks/' + m
-end
+require 'web_ui_components/core/building_blocks/group'
+require 'web_ui_components/core/building_blocks/header'
+require 'web_ui_components/core/building_blocks/paragraph'
+require 'web_ui_components/core/building_blocks/link'
+require 'web_ui_components/core/building_blocks/list'
+require 'web_ui_components/core/building_blocks/text'
 
 module WebUIComponents
   module Core
