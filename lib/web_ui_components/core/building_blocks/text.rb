@@ -3,8 +3,7 @@ require 'web_ui_components/core/building_blocks/building_block'
 module WebUIComponents
   module Core
     module BuildingBlocks
-      # Defines a paragraph. Typically an area of textual content which contains related
-      # concepts.
+      # Defines text. A collection of characters
       class Text < BuildingBlock
         
         building_block_name :text
