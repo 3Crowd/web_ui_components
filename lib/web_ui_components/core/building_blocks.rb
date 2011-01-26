@@ -1,5 +1,5 @@
 require 'web_ui_components/core/building_blocks/building_block'
-['group', 'header', 'paragraph'].each do |m|
+['group', 'header', 'paragraph', 'link'].each do |m|
   require 'web_ui_components/core/building_blocks/' + m
 end
 
