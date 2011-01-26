@@ -187,6 +187,35 @@ describe WebUIComponents::Core::Component::BuildingBlocks do
         end
         
       end
+      
+      describe "method has_building_block_name_registered_to_building_block?" do
+        
+        before do
+          @component = dynamic_subclass(WebUIComponents::Core::Component, :class_suffix => 'Component')
+          @test_name = :test_building_block
+          @test_object_class = Object
+          @test_object_incorrect_class = Hash
+        end
+        
+        context 'with two arguments, one specifying the building block name, the second specifying the building block class' do
+          
+          it 'returns true if the given building block name refers to the given building block class' do
+            @component.register_building_block(@test_object_class, @test_name)
+            @component.has_building_block_name_registered_to_building_block?(@test_name, @test_object_class).should be_true
+          end
+          
+          it 'returns false if the given building block name does not refer to the given building block class' do
+            @component.register_building_block(@test_object_incorrect_class, @test_name)
+            @component.has_building_block_name_registered_to_building_block?(@test_name, @test_object_class).should be_false
+          end
+          
+          it 'returns false if the given building block name does not refer to any building block class' do
+            @component.has_building_block_name_registered_to_building_block?(@test_name, @test_object_class).should be_false
+          end
+          
+        end
+        
+      end
 
     end
 

@@ -27,7 +27,7 @@ describe WebUIComponents::Core::BuildingBlocks::BuildingBlock do
       context 'with a single argument representing a single component_name' do
         
         it 'assigns the block a name for use inside component building block methods' do
-          test_building_block_name = :test_building_block
+          test_building_block_name = :test_building_block_assignment
           @building_block.building_block_names.should be_empty
           @building_block.class_eval do
             building_block_name test_building_block_name
@@ -35,25 +35,35 @@ describe WebUIComponents::Core::BuildingBlocks::BuildingBlock do
           @building_block.building_block_names.should include(test_building_block_name)
         end
         
-        context 'does not pollute' do
-        
-          before do
-            @building_block.building_block_names.should be_empty
-            @building_block.class_eval do
-              building_block_name :test_building_block
-            end
-            @building_block.building_block_names.should include(:test_building_block)
+        it 'registers the building block name with the base component' do
+          building_block_name_to_test = :test_building_block_registration
+          @building_block.class_eval do
+            building_block_name building_block_name_to_test
           end
+          WebUIComponents::Core::Component.should have_building_block_name_registered(building_block_name_to_test)
+          WebUIComponents::Core::Component.should have_building_block_name_registered_to_building_block(building_block_name_to_test, @building_block)
+        end
+        
+        context 'does not pollute' do
           
           it 'a sibling class with specified building_block_names' do
+            @building_block.class_eval do
+              building_block_name :test_building_block_sibling_pollution
+            end
             @building_block_sibling.building_block_names.should be_empty
           end
           
           it 'parent class with specified building_block_names' do
+            @building_block.class_eval do
+              building_block_name :test_building_block_parent_pollution
+            end
             @building_block.superclass.building_block_names.should be_empty
           end
           
           it 'a child class with specified building_block_names' do
+            @building_block.class_eval do
+              building_block_name :test_building_block_child_pollution
+            end
             @building_block_child.building_block_names.should be_empty
           end
           
@@ -76,7 +86,7 @@ describe WebUIComponents::Core::BuildingBlocks::BuildingBlock do
         end
         
         it 'returns a list of the registered names by which this building_block can be referred to from within a component' do
-          test_building_block_names = [:test_component, :test_component_1]
+          test_building_block_names = [:test_building_block_references, :test_building_block_references_1]
           @building_block.building_block_names.should be_empty
           @building_block.class_eval do
             test_building_block_names.each do |test_building_block_name|

@@ -42,6 +42,10 @@ module WebUIComponents
           def has_building_block_registered? building_block_class
             registered_building_blocks.has_value?(building_block_class)
           end
+          
+          def has_building_block_name_registered_to_building_block? building_block_name, building_block_class
+            registered_building_blocks.has_key?(building_block_name) && (registered_building_blocks[building_block_name] == building_block_class)
+          end
 
           private
 
