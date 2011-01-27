@@ -100,6 +100,60 @@ describe WebUIComponents::Core::BuildingBlocks::BuildingBlock do
       
     end
     
+    describe 'method style' do
+      
+      before do
+        @building_block = dynamic_subclass(WebUIComponents::Core::BuildingBlocks::BuildingBlock)
+      end
+      
+      context 'with a single argument and a block' do
+        
+        it 'registers the style' do
+          pending
+        end
+        
+        it 'associates the style with the given block' do
+          pending
+        end
+        
+      end
+      
+      context 'with a single argument and no block' do
+        
+        it 'registers the style' do
+          pending
+        end
+        
+        it 'associates the style with no block' do
+          pending
+        end
+        
+      end
+      
+    end
+    
+    describe 'method styles' do
+      
+      before do
+        @building_block = dynamic_subclass(WebUIComponents::Core::BuildingBlocks::BuildingBlock)
+      end
+      
+      context 'with a no argument' do
+        
+        it 'returns an array of available styles' do
+          pending
+        end
+        
+      end
+      
+    end
+    
+    describe 'method property' do
+    end
+    
+    describe 'method has_property?' do
+    end
+    
   end
   
 end
