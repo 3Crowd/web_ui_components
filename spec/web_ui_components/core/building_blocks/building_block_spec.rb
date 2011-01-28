@@ -100,6 +100,37 @@ describe WebUIComponents::Core::BuildingBlocks::BuildingBlock do
       
     end
     
+    describe 'method has_associated_procedure_for_style?'do
+    
+      before do
+        @building_block = dynamic_subclass(WebUIComponents::Core::BuildingBlocks::BuildingBlock)
+      end
+      
+      context 'with one argument that is the name of the style' do
+        
+        it 'returns true if the given style name has an associated procedure' do
+          @building_block.class_eval do
+            style :test_true_if_procedure_associated do
+            end
+          end
+          @building_block.should have_associated_procedure_for_style(:test_true_if_procedure_associated)
+        end
+        
+        it 'returns false if the given style name does not have an associated procedure' do
+          @building_block.class_eval do
+            style :test_false_if_procedure_associated
+          end
+          @building_block.should_not have_associated_procedure_for_style(:test_false_if_procedure_associated)
+        end
+        
+        it 'returns false if the given style name is not registered' do
+          @building_block.should_not have_associated_procedure_for_style(:non_existant)
+        end
+        
+      end
+    
+    end
+    
     describe 'method style' do
       
       before do
@@ -108,28 +139,43 @@ describe WebUIComponents::Core::BuildingBlocks::BuildingBlock do
       
       context 'with a single argument and a block' do
         
+        before do
+          @style_name = :test_style_registration
+          @building_block.class_eval do
+            style :test_style_registration do
+            end
+          end
+        end
+        
         it 'registers the style' do
-          pending
+          @building_block.styles.should include(@style_name)
         end
         
         it 'associates the style with the given block' do
-          pending
+          @building_block.should have_associated_procedure_for_style(@style_name)
         end
         
       end
       
       context 'with a single argument and no block' do
         
-        it 'registers the style' do
-          pending
+        before do
+          @style_name = :test_style_registration_without_block
+          @building_block.class_eval do
+            style :test_style_registration_without_block
+          end
         end
         
-        it 'associates the style with no block' do
-          pending
+        it 'registers the style' do
+          @building_block.styles.should include(@style_name)
+        end
+        
+        it 'does not associate a block with the style' do
+          @building_block.should_not have_associated_procedure_for_style(@style_name)
         end
         
       end
-      
+    
     end
     
     describe 'method styles' do
@@ -138,10 +184,16 @@ describe WebUIComponents::Core::BuildingBlocks::BuildingBlock do
         @building_block = dynamic_subclass(WebUIComponents::Core::BuildingBlocks::BuildingBlock)
       end
       
-      context 'with a no argument' do
+      context 'with no argument' do
         
         it 'returns an array of available styles' do
-          pending
+          test_styles = { :test_available_styles_1 => lambda{}, :test_available_styles_2 => lambda{} }
+          @building_block.class_eval do
+            test_styles.each do |k,v|
+              style k, &v
+            end
+          end
+          @building_block.styles.should eql(test_styles.keys)
         end
         
       end
@@ -149,9 +201,11 @@ describe WebUIComponents::Core::BuildingBlocks::BuildingBlock do
     end
     
     describe 'method property' do
+      pending
     end
     
     describe 'method has_property?' do
+      pending
     end
     
   end

@@ -24,7 +24,31 @@ module WebUIComponents
             @building_block_names ||= []
           end
           
+          # Registers the given style as available and associates the given procedure with
+          # the style. This procedure will be executed when the style is selected
+          def style style_name, &procedure
+            registered_styles[style_name] = procedure
+          end
+          
+          # Returns a list of registered styles for the building block class
+          def styles
+            registered_styles.keys
+          end
+          
+          # Returns true if the given style name has a procedure that will be executed when
+          # the style is set. Returns false if the style is not registered or if the style
+          # does not have an associated procedure.
+          def has_associated_procedure_for_style? style_name
+            registered_styles.has_key?(style_name) && registered_styles[style_name].kind_of?(Proc)
+          end
+          
           private
+          
+          # Registered style storage
+          # @private
+          def registered_styles
+            @registered_styles ||= Hash.new
+          end
           
           # Registers this building block with the base component from which
           # all other components are derived
