@@ -201,7 +201,39 @@ describe WebUIComponents::Core::BuildingBlocks::BuildingBlock do
     end
     
     describe 'method property' do
-      pending
+      
+      before do
+        @building_block = dynamic_subclass(WebUIComponents::Core::BuildingBlocks::BuildingBlock)
+      end
+      
+      context 'with one argument, the name of the property' do
+        
+        it 'declares the building block as having that property' do
+          pending
+        end
+        
+        it 'defines the valid values for the property as being true and false' do
+          pending
+        end
+        
+        it 'sets the value of the property to true' do
+          pending
+        end
+        
+      end
+      
+      context 'with two arguments, the first being the name of the property, the second a hash of property options' do
+        
+        it 'declares the building block as having that property' do
+          pending
+        end
+        
+        it 'sets the valid options for the property when the options hash has a key of :valid_options, with an array value containing a set of valid options' do
+          pending
+        end
+        
+      end
+      
     end
     
     describe 'method has_property?' do
