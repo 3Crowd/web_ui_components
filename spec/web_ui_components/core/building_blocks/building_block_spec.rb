@@ -14,6 +14,47 @@ describe WebUIComponents::Core::BuildingBlocks::BuildingBlock do
     WebUIComponents::Core::Component.should_not have_building_block_registered(WebUIComponents::Core::BuildingBlocks::BuildingBlock)
   end
   
+  describe 'instance methods' do
+    
+    before do
+      @property_name = property_name = :test_property_1
+      @property_value = property_value = :test_value_1
+      @building_block = dynamic_subclass(WebUIComponents::Core::BuildingBlocks::BuildingBlock)
+      @building_block.class_eval do
+        property :test_property_1, :default_value => property_value
+      end
+      @building_block_instance = @building_block.new
+    end
+    
+
+    describe 'dynamic method {property_name}' do
+      
+      it 'should exist for a defined property' do
+        @building_block_instance.should respond_to(@property_name)
+      end
+      
+      it 'should return the value of the property' do
+        @building_block_instance.send(@property_name).should eql(@property_value)
+      end
+      
+    end
+
+    describe 'dynamic method {property_name}=' do
+      
+      it 'should exist for a defined property' do
+        @building_block_instance.should respond_to(@property_name.to_s+'=')
+      end
+      
+      it 'should set the value of the property' do
+        value_to_set = :set_value
+        @building_block_instance.send(@property_name.to_s+'=', value_to_set)
+        @building_block_instance.send(@property_name).should eql(value_to_set)
+      end
+      
+    end
+
+  end
+  
   describe 'class methods' do
     
     describe 'method building_block_name' do
@@ -208,36 +249,148 @@ describe WebUIComponents::Core::BuildingBlocks::BuildingBlock do
       
       context 'with one argument, the name of the property' do
         
+        before do
+          @property_name = property_name = :test_property
+          @building_block.class_eval do
+            property property_name
+          end
+        end
+        
         it 'declares the building block as having that property' do
-          pending
+          @building_block.properties.should include(@property_name)
         end
         
         it 'defines the valid values for the property as being true and false' do
-          pending
+          valid_values_for_property = @building_block.valid_values_for_property(@property_name)
+          valid_values_for_property.count.should eql(2)
+          valid_values_for_property.should include(true)
+          valid_values_for_property.should include(false)
         end
         
-        it 'sets the value of the property to true' do
-          pending
+        it 'sets the default value of the property to true' do
+          @building_block.default_value_for_property(@property_name).should be_true
         end
         
       end
       
       context 'with two arguments, the first being the name of the property, the second a hash of property options' do
         
-        it 'declares the building block as having that property' do
-          pending
+        context 'with the options hash only having :default_value set' do
+          
+          before do
+            @property_name = property_name = :test_property
+            @default_value = default_value = :default_value
+            @building_block.class_eval do
+              property property_name, :default_value => default_value
+            end
+          end
+          
+          it 'sets the default value for the building block to be the specified default value' do
+            @building_block.default_value_for_property(@property_name).should eql(@default_value)
+          end
+          
         end
         
-        it 'sets the valid options for the property when the options hash has a key of :valid_options, with an array value containing a set of valid options' do
-          pending
+        context 'with the options hash having :valid_values set' do
+          
+          before do
+            @property_name = property_name = :test_property
+            @valid_values = valid_values = [ :test_option_1, :test_option_2, :test_option_3 ]
+            @building_block.class_eval do
+              property property_name, :valid_values => valid_values
+            end
+          end
+            
+          it 'sets the valid options for the property when the options hash has a key of :valid_values, with an array value containing a set of valid options' do
+            @building_block.valid_values_for_property(@property_name).should eql(@valid_values)
+          end
+        
         end
         
       end
       
     end
     
-    describe 'method has_property?' do
-      pending
+    describe 'method properties' do
+      
+      before do
+        @property_names = property_names = [:test_property_1, :test_property_2]
+        @building_block = dynamic_subclass(WebUIComponents::Core::BuildingBlocks::BuildingBlock)
+        @building_block.class_eval do
+          property_names.each do |property_name|
+            property property_name
+          end
+        end
+      end
+      
+      context 'with no arguments' do
+        
+        it 'returns an array containing the names of the defined properties for the building block' do
+          available_properties = @building_block.properties
+          available_properties.count.should eql(@property_names.count)
+          @property_names.each do |property_name|
+            available_properties.should include(property_name)
+          end
+        end
+        
+      end
+      
+    end
+    
+    describe 'method default_value_for_property' do
+      
+      before do
+        @building_block = dynamic_subclass(WebUIComponents::Core::BuildingBlocks::BuildingBlock)
+      end
+      
+      context 'with one argument specifying the property' do
+        
+        it 'returns the default value for the given property' do
+          property_name = :test_property
+          default_value = false
+          @building_block.class_eval do
+            property property_name, :default_value => default_value
+          end
+          @building_block.default_value_for_property(property_name).should eql(default_value)
+        end
+        
+      end
+      
+    end
+    
+    describe 'method valid_values_for_property' do
+      
+      before do
+        @property_name_with_valid_values_set = property_name_with_valid_values_set = :test_property_1
+        @property_name_without_valid_values_set = property_name_without_valid_values_set = :test_property_2
+        @valid_values = valid_values = [ :valid_option_1, :valid_option_2 ]
+        @building_block = dynamic_subclass(WebUIComponents::Core::BuildingBlocks::BuildingBlock)
+        @building_block.class_eval do
+          property property_name_without_valid_values_set
+          property property_name_with_valid_values_set, :valid_values => valid_values
+        end
+      end
+      
+      context 'with a single argument, specifying the name of the property' do
+        
+        it 'returns an array containing the valid values for a property' do
+          valid_values_for_property = @building_block.valid_values_for_property(@property_name_with_valid_values_set)
+          valid_values_for_property.count.should eql(@valid_values.count)
+          @valid_values.each do |valid_option|
+            valid_values_for_property.should include(valid_option)
+          end
+        end
+        
+        it 'returns an array containing only the values true and false for a property without explictly set valid options' do
+          valid_values = @building_block.valid_values_for_property(@property_name_without_valid_values_set)
+          valid_values.count.should eql(2)
+          [true, false].each do |value|
+            valid_values.should include(value)
+          end
+        end
+        
+      end
+      
     end
     
   end
