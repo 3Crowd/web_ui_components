@@ -8,6 +8,12 @@ module WebUIComponents
         
         building_block_name :group
         
+        style :anonymous_inline do |instance|
+        end
+        
+        style :anonymous_block do |instance|
+        end
+        
       end
     end
   end
