@@ -15,40 +15,69 @@ describe WebUIComponents::Core::BuildingBlocks::BuildingBlock do
   end
   
   describe 'instance methods' do
-    
-    before do
-      @property_name = property_name = :test_property_1
-      @property_value = property_value = :test_value_1
-      @building_block = dynamic_subclass(WebUIComponents::Core::BuildingBlocks::BuildingBlock)
-      @building_block.class_eval do
-        property :test_property_1, :default_value => property_value
+
+    describe 'initializer' do
+      
+      before do
+        @building_block = dynamic_subclass(WebUIComponents::Core::BuildingBlocks::BuildingBlock)
+        @building_block.class_eval do
+          property :test_property, :default_value => false
+          style :test_style do |instance|
+            instance.test_property = true
+          end
+        end
       end
-      @building_block_instance = @building_block.new
+      
+      context 'with style option set in options hash' do
+        
+        before do
+          @building_block_instance = @building_block.new :style => :test_style
+        end
+        
+        it 'should activate the style' do
+          @building_block_instance.test_property.should be_true
+        end
+        
+      end
+      
     end
     
-
-    describe 'dynamic method {property_name}' do
+    describe 'dynamic methods' do
       
-      it 'should exist for a defined property' do
-        @building_block_instance.should respond_to(@property_name)
+      before do
+        @property_name = property_name = :test_property_1
+        @property_value = property_value = :test_value_1
+        @building_block = dynamic_subclass(WebUIComponents::Core::BuildingBlocks::BuildingBlock)
+        @building_block.class_eval do
+          property :test_property_1, :default_value => property_value
+        end
+        @building_block_instance = @building_block.new
       end
       
-      it 'should return the value of the property' do
-        @building_block_instance.send(@property_name).should eql(@property_value)
+      describe 'dynamic method {property_name}' do
+        
+        it 'should exist for a defined property' do
+          @building_block_instance.should respond_to(@property_name)
+        end
+        
+        it 'should return the value of the property' do
+          @building_block_instance.send(@property_name).should eql(@property_value)
+        end
+        
       end
-      
-    end
-
-    describe 'dynamic method {property_name}=' do
-      
-      it 'should exist for a defined property' do
-        @building_block_instance.should respond_to(@property_name.to_s+'=')
-      end
-      
-      it 'should set the value of the property' do
-        value_to_set = :set_value
-        @building_block_instance.send(@property_name.to_s+'=', value_to_set)
-        @building_block_instance.send(@property_name).should eql(value_to_set)
+  
+      describe 'dynamic method {property_name}=' do
+        
+        it 'should exist for a defined property' do
+          @building_block_instance.should respond_to(@property_name.to_s+'=')
+        end
+        
+        it 'should set the value of the property' do
+          value_to_set = :set_value
+          @building_block_instance.send(@property_name.to_s+'=', value_to_set)
+          @building_block_instance.send(@property_name).should eql(value_to_set)
+        end
+        
       end
       
     end
@@ -387,6 +416,32 @@ describe WebUIComponents::Core::BuildingBlocks::BuildingBlock do
           [true, false].each do |value|
             valid_values.should include(value)
           end
+        end
+        
+      end
+      
+    end
+    
+    describe 'method associated_procedure_for_style' do
+      
+      before do
+        @building_block = dynamic_subclass(WebUIComponents::Core::BuildingBlocks::BuildingBlock)
+        @test_proc = test_proc = lambda{}
+        @building_block.class_eval do
+          style :test_style, &test_proc
+        end
+      end
+      
+      context 'with a single argument, specifying the name of the style' do
+        
+        it 'should return the procedure for a registered specified style' do
+          @building_block.associated_procedure_for_style(:test_style).should eql(@test_proc)
+        end
+        
+        it 'should return an empty procedure for an unregistered style' do
+          procedure = @building_block.associated_procedure_for_style(:unregistered_style)
+          procedure.should_not be_nil
+          procedure.should be_a_kind_of(Proc)
         end
         
       end

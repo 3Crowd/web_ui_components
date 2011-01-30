@@ -39,7 +39,17 @@ module WebUIComponents
           # the style is set. Returns false if the style is not registered or if the style
           # does not have an associated procedure.
           def has_associated_procedure_for_style? style_name
-            registered_styles.has_key?(style_name) && registered_styles[style_name].kind_of?(Proc)
+            styles.include?(style_name) && associated_procedure_for_style(style_name).respond_to?(:call)
+          end
+          
+          # Returns a reference to the procedure associated to a given style. Returns an empty
+          # procedure if the given style is not registered
+          def associated_procedure_for_style style_name
+            if registered_styles.has_key?(style_name)
+              registered_styles[style_name]
+            else
+              lambda{|building_block_instance|}
+            end
           end
           
           # Adds a given property to the list of valid properties for the building block. Options
@@ -111,6 +121,18 @@ module WebUIComponents
             WebUIComponents::Core::Component.register_building_block(self, name_to_add)
           end
           
+        end
+        
+        def initialize options={}
+          activate_style(options[:style]) if options.has_key?(:style)
+        end
+        
+        private
+        
+        # Activate a style by calling its associated procedure in the instance's scope
+        # @private
+        def activate_style style_name
+          self.class.associated_procedure_for_style(style_name).call(self)
         end
         
       end
