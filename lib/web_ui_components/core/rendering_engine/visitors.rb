@@ -11,6 +11,8 @@ module WebUIComponents
       module Visitors
         # Stores a mapping of convenient human readable names to visitor class references
         VISITORS = {
+          :component => WebUIComponents::Core::RenderingEngine::Visitors::ComponentVisitor,
+          :building_block => WebUIComponents::Core::RenderingEngine::Visitors::BuildingBlockVisitor
           }
           
         class << self
