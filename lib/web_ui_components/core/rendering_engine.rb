@@ -1,3 +1,5 @@
+require 'web_ui_components/core/rendering_engine/visitors'
+
 module WebUIComponents
   module Core
     # The RenderingEngine module is a collection of classes related to turning

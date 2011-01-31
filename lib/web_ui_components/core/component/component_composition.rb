@@ -10,7 +10,12 @@ module WebUIComponents
 
         # Instance methods defined here will be added to the extending class's singleton class.
         module ClassMethods
-
+          
+          # Component tags of which this component is composed
+          def composed_of_component_tags
+            components.keys
+          end
+          
           # Specify the other components of which this module is composed
           def composed_of *component_tags_to_define
             component_tags_to_define.each do |component_tag_to_define|

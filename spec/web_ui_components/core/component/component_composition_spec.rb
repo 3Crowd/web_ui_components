@@ -58,6 +58,24 @@ describe WebUIComponents::Core::Component::ComponentComposition do
       end
 
     end
+    
+    describe 'method composed_of_component_tags' do
+      
+      before do
+        @component = dynamic_subclass(WebUIComponents::Core::Component, :class_suffix => 'Component')
+        @component_tags = component_tags = [:test_tag_1, :test_tag_2]
+        @component.class_eval do
+          component_tags.each do |tag|
+            composed_of tag
+          end
+        end
+      end
+      
+      it 'returns an array containing a list of tags referring to components of which the component is composed' do
+        @component.composed_of_component_tags.should eql(@component_tags)
+      end
+      
+    end
 
     describe "method composed_of?" do
 
