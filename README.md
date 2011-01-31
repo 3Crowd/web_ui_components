@@ -161,3 +161,8 @@ And, using the components defined above:
        </span>
     
        ENDOFHTML
+
+Inspiration
+-----------
+Much inspiration for the rendering structure of this library is taken from the ARel project, also under MIT
+license, which may be found at https://github.com/rails/arel/.
