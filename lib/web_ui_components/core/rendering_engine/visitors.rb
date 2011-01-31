@@ -9,6 +9,7 @@ module WebUIComponents
       # the behavior required for walking various structures and gaining intelligence
       # about the document structure
       module Visitors
+        # Stores a mapping of convenient human readable names to visitor class references
         VISITORS = {
           }
           

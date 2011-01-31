@@ -4,10 +4,15 @@ module WebUIComponents
   module Core
     module RenderingEngine
       module Visitors
+        # Traverses the given building block structure and its children and provides
+        # rendering callbacks and state for format rendering functions
         class BuildingBlockVisitor < Visitor
           
           private
           
+          # Traverse the WebUIComponents::Core::BuildingBlocks::BuildingBlock or derived structure
+          # and its children structures
+          # @private
           def visit_WebUIComponents_Core_BuildingBlocks_BuildingBlock o
           end
           

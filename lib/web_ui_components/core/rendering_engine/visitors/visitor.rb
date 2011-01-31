@@ -15,6 +15,7 @@ module WebUIComponents
           
           private
           
+          # Maps the class to its correct handling method for visitor dispatch
           # @private
           DISPATCH = Hash.new do |hash, klass|
             hash[klass] = "visit_#{(klass.name || '').gsub('::','_')}"
