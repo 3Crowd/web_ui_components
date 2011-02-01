@@ -79,11 +79,7 @@ module WebUIComponents
           
           # Returns the default value declared for the given property name.
           def default_value_for_property property_name
-            if registered_properties.has_key?(property_name)
-              registered_properties[property_name][:default_value]
-            else
-              nil
-            end
+            registered_properties[property_name][:default_value] if registered_properties.has_key?(property_name)
           end
           
           private
