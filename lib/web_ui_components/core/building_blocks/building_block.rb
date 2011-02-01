@@ -57,10 +57,11 @@ module WebUIComponents
           # options[:value] must be set or the value will be set to true, even if true is not in the list
           # of valid_options
           def property property_name, options = {}
-            registered_properties[property_name] = {
-              :default_value => options.has_key?(:default_value) ? options[:default_value] : true,
-              :valid_values => options.has_key?(:valid_values) ? options[:valid_values] : [true, false]
+            default_options = {
+              :default_value => true,
+              :valid_values => [true, false]
             }
+            registered_properties[property_name] = default_options.merge(options)
             
             define_instance_property_getter_method property_name
             define_instance_property_setter_method property_name
