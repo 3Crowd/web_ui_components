@@ -62,18 +62,8 @@ module WebUIComponents
               :valid_values => options.has_key?(:valid_values) ? options[:valid_values] : [true, false]
             }
             
-            define_method property_name do
-              if @registered_property_values && @registered_property_values.has_key?(property_name)
-                @registered_property_values[property_name]
-              else
-                self.class.default_value_for_property(property_name)
-              end
-            end
-            
-            define_method property_name.to_s+'=' do |value_to_set|
-              @registered_property_values ||= Hash.new
-              @registered_property_values[property_name] = value_to_set
-            end
+            define_instance_property_getter_method property_name
+            define_instance_property_setter_method property_name
             
           end
           
@@ -101,6 +91,27 @@ module WebUIComponents
           end
           
           private
+          
+          # Dynamically defines an instance property getter method
+          # @private
+          def define_instance_property_getter_method property_name
+            define_method property_name do
+              if @registered_property_values && @registered_property_values.has_key?(property_name)
+                @registered_property_values[property_name]
+              else
+                self.class.default_value_for_property(property_name)
+              end
+            end
+          end
+          
+          # Dynamically defines an instance property setter method
+          # @private
+          def define_instance_property_setter_method property_name
+            define_method property_name.to_s+'=' do |value_to_set|
+              @registered_property_values ||= Hash.new
+              @registered_property_values[property_name] = value_to_set
+            end
+          end
           
           # Registered style storage
           # @private
