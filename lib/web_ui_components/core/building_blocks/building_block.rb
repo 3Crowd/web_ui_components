@@ -74,11 +74,7 @@ module WebUIComponents
           
           # Returns an array of the valid values declared for the given property name
           def valid_values_for_property property_name
-            if registered_properties.has_key?(property_name)
-              registered_properties[property_name][:valid_values]
-            else
-              nil
-            end
+            registered_properties[property_name][:valid_values] if registered_properties.has_key?(property_name)
           end
           
           # Returns the default value declared for the given property name.
