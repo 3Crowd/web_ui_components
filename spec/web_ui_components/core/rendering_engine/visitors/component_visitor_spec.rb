@@ -26,6 +26,14 @@ describe WebUIComponents::Core::RenderingEngine::Visitors::ComponentVisitor do
         @component_visitor_vanilla_instance.private_methods.should include(:visit_WebUIComponents_Core_Component)
       end
       
+      it 'visits child components' do
+        component_class = dynamic_subclass(WebUIComponents::Core::Component, :class_suffix=>'Component')
+        component_class.class_eval do
+          composed_of :component_sets
+        end
+        pending 'TODO: need a way to access composed_of components'
+      end
+      
     end
     
   end

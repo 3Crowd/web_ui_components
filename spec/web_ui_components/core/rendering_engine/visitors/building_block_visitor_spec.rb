@@ -26,6 +26,10 @@ describe WebUIComponents::Core::RenderingEngine::Visitors::BuildingBlockVisitor 
         @building_block_visitor_instance.private_methods.should include(:visit_WebUIComponents_Core_BuildingBlocks_BuildingBlock)
       end
       
+      it 'visits child building blocks' do
+        pending 'TODO: need a way in which to access child building blocks'
+      end
+      
     end
     
     describe 'method visit_WebUIComponents_Core_BuildingBlocks_Group' do
